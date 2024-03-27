@@ -1,0 +1,57 @@
+{
+  "name": "@eosnetwork/vert",
+  "version": "1.0.0",
+  "homepage": "https://github.com/eosnetworkfoundation/vert",
+  "description": "Testing library for Antelope (EOS) blockchain smart contracts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "build-web": "webpack",
+    "start": "node dist/index",
+    "test": "mocha src/**/*.spec.ts -r ts-node/register && yarn --cwd examples",
+    "prepublish": "npm run test && npm run build"
+  },
+  "author": "Jeeyong Um <conr2d@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.3.11",
+    "@types/elliptic": "^6.4.18",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.30",
+    "bigint-conversion": "^2.4.3",
+    "buffer": "^6.0.3",
+    "clean-webpack-plugin": "^4.0.0",
+    "mocha": "^10.4.0",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.5.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.5",
+    "util": "^0.12.4",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2"
+  },
+  "dependencies": {
+    "@ethereumjs/util": "^8.0.0-beta.1",
+    "@greymass/eosio": "^0.5.5",
+    "bn.js": "^5.2.0",
+    "brorand": "^1.1.0",
+    "chai": "^4.3.6",
+    "colors": "^1.4.0",
+    "cross-fetch": "^3.1.5",
+    "elliptic": "^6.5.4",
+    "hash.js": "^1.1.7",
+    "js-sha3": "^0.8.0",
+    "json-diff": "^0.9.0",
+    "json-diff-ts": "^1.2.4",
+    "lodash": "^4.17.21",
+    "loglevel": "^1.8.0",
+    "loglevel-plugin-prefix": "^0.8.4",
+    "rustbn.js": "^0.2.0",
+    "sorted-btree": "^1.6.0"
+  }
+}
