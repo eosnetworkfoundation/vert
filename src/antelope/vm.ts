@@ -1269,25 +1269,60 @@ class VM extends Vert {
           }
           return dest;
         },
-  
-        // TODO: compiler-rt APIs
-        __ashlti3: () => { throw new Error("Not implemented _ashlti3") },
-        // __ashlti3: (ret: ptr, _low: i64, _high: i64, shift: i32) => {
-        //   const [low, high] = convertToUnsigned(_low, _high);
+        __ashlti3: (ret: ptr, _low: i64, _high: i64, shift: i32) => {
+          const [low, high] = convertToUnsigned(_low, _high);
 
-        //   const buffer = Buffer.alloc(16)
-        //   buffer.writeBigUInt64LE(low, 0);
-        //   buffer.writeBigUInt64LE(high, 8);
+          // Combine low and high into a 128-bit BigInt
+          let value: i128 = BigInt(high);
+          value = BigInt.asUintN(128, value << 64n);
+          value = BigInt.asUintN(128, value | low);
 
-        //   const num = SecondaryKeyConverter.int128.from(buffer)
-        //   const final = BigInt.asUintN(128, num << BigInt(shift))
+          // Perform the left shift
+          const result = BigInt.asUintN(128, value << BigInt(shift));
 
-        //   const retBuffer = Buffer.from_(this.memory.buffer, ret, 16)
-        //   SecondaryKeyConverter.int128.to(retBuffer, final)
-        // },
-        __ashrti3: () => { throw new Error("Not implemented _ashrti3") },
-        __lshlti3: () => { throw new Error("Not implemented _lshlti3") },
-        __lshrti3: () => { throw new Error("Not implemented _lshrti3") },
+          // Split the result back into low and high 64-bit parts
+          const retBuffer = Buffer.from_(this.memory.buffer, ret, 16);
+          SecondaryKeyConverter.uint128.to(retBuffer, result);
+        },
+        __ashrti3: (ret: ptr, _low: i64, _high: i64, shift: i32) => {
+          const [low, high] = convertToUnsigned(_low, _high);
+
+          // Combine low and high into a 128-bit BigInt
+          let value: i128 = BigInt(high);
+          value = BigInt.asUintN(128, value << 64n);
+          value = BigInt.asUintN(128, value | low);
+
+          // Perform the arithmetic right shift
+          const result = BigInt.asIntN(128, value >> BigInt(shift));
+
+          // Split the result back into low and high 64-bit parts
+          const retBuffer = Buffer.from_(this.memory.buffer, ret, 16);
+          SecondaryKeyConverter.int128.to(retBuffer, result);
+        },
+        __lshlti3: (ret: ptr, _low: i64, _high: i64, shift: i32) => {
+          const [low, high] = convertToUnsigned(_low, _high);
+
+          let value: i128 = BigInt(high);
+          value = BigInt.asUintN(128, value << 64n);
+          value = BigInt.asUintN(128, value | low);
+
+          const result = BigInt.asUintN(128, value << BigInt(shift));
+
+          const retBuffer = Buffer.from_(this.memory.buffer, ret, 16);
+          SecondaryKeyConverter.uint128.to(retBuffer, result);
+        },
+        __lshrti3: (ret: ptr, _low: i64, _high: i64, shift: i32) => {
+          const [low, high] = convertToUnsigned(_low, _high);
+
+          let value: i128 = BigInt(high);
+          value = BigInt.asUintN(128, value << 64n);
+          value = BigInt.asUintN(128, value | low);
+
+          const result = BigInt.asUintN(128, value >> BigInt(shift));
+
+          const retBuffer = Buffer.from_(this.memory.buffer, ret, 16);
+          SecondaryKeyConverter.uint128.to(retBuffer, result);
+        },
         __divti3: (ret: ptr, _la: i64, _ha: i64, _lb: i64, _hb: i64): void => { 
           const [la, ha, lb, hb] = convertToUnsigned(_la, _ha, _lb, _hb);
 
