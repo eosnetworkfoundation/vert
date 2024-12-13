@@ -11,6 +11,7 @@ export type AccountArgs = Omit<Partial<Account>, 'name'|'abi'|'wasm'> & {
   abi?: ABIDef | Promise<ABIDef>;
   wasm?: Uint8Array | Promise<Uint8Array>;
   enableInline?: boolean;
+  privileged?: boolean;
 }
 
 function isPromise(promise: any) {
@@ -31,6 +32,8 @@ export class Account {
     [key: string]: (scope?: bigint | BN) => TableView
   } = {};
 
+  // Privileged accounts aren't constrained by the normal permission checks
+  public privileged: boolean = false;
   public permissions: API.v1.AccountPermission[] = [];
   public wasm?: Uint8Array;
   public codeSequence: number = 0;
@@ -56,6 +59,10 @@ export class Account {
       } else {
         this.setContract(args.abi as ABIDef, args.wasm as Uint8Array)
       }
+    }
+
+    if (args.privileged) {
+      this.privileged = true;
     }
   }
 

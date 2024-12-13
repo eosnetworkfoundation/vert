@@ -130,6 +130,8 @@ class VM extends Vert {
         require_auth: (_name: i64): void => {
           const [name] = convertToUnsigned(_name);
           log.debug(`require_auth: ${bigIntToName(name)}`);
+
+          if(this.context.receiver.privileged) return;
   
           let hasAuth = false;
           for (const auth of this.context.authorization) {
@@ -145,7 +147,8 @@ class VM extends Vert {
           assert(hasAuth, `missing required authority ${bigIntToName(name)}`);
         },
         has_auth: (_name: i64): boolean => {
-          const [name] = convertToUnsigned(_name);  
+          const [name] = convertToUnsigned(_name);
+
           let hasAuth = false;
           for (const auth of this.context.authorization) {
             if (nameToBigInt(auth.actor) === name) {
@@ -1658,7 +1661,8 @@ class VM extends Vert {
           actor: this.context.sender,
           permission: 'eosio.code'
         }))
-        if (!satisfied) {
+
+        if (!satisfied && !this.context.receiver.privileged) {
           throw new Error(`Permission ${auth.actor}@${accountPermission.perm_name} is not satisfied by ${this.context.receiver.name}@eosio.code`)
         }
       }

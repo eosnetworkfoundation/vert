@@ -7,3 +7,4 @@ build
 examples/**/*.wasm
 examples/**/*.abi
 .DS_Store
+bun.lockb
