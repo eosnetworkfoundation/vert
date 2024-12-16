@@ -130,8 +130,6 @@ class VM extends Vert {
         require_auth: (_name: i64): void => {
           const [name] = convertToUnsigned(_name);
           log.debug(`require_auth: ${bigIntToName(name)}`);
-
-          if(this.context.receiver.privileged) return;
   
           let hasAuth = false;
           for (const auth of this.context.authorization) {

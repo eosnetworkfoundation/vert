@@ -25,9 +25,6 @@ describe('priv users', () => {
             'missing required authority user'
         );
     });
-    it('should fail succeed authorization with a privileged contract', async () => {
-        await privContract.actions.test(['user']).send('notuser@active');
-    });
     it('should be able to call an inline from a privileged account', async () => {
         await privContract.actions.inlinetest(['user', 'auth.require']).send('notuser@active');
     });
