@@ -1660,7 +1660,8 @@ class VM extends Vert {
           permission: 'eosio.code'
         }))
 
-        if (!satisfied && !this.context.receiver.privileged) {
+        const sender = this.context.receiver.bc.getAccount(this.context.sender);
+        if (!satisfied && !sender.privileged) {
           throw new Error(`Permission ${auth.actor}@${accountPermission.perm_name} is not satisfied by ${this.context.receiver.name}@eosio.code`)
         }
       }

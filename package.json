@@ -1,6 +1,6 @@
 {
   "name": "@eosnetwork/vert",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "homepage": "https://github.com/eosnetworkfoundation/vert",
   "description": "Testing library for Antelope (EOS) blockchain smart contracts",
   "main": "dist/index.js",
